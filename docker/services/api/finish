@@ -1,0 +1,3 @@
+#! /bin/bash
+echo "api exited with code" $?
+sleep 3

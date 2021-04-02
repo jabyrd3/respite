@@ -1,0 +1,6 @@
+#! /bin/bash
+mkdir -p /var/run/
+if [[ ! -f /root/pdns.sqlite3 ]]; then
+  sqlite3 /root/pdns.sqlite3 < /etc/pdns/schema.sql
+fi;
+exec pdns_server

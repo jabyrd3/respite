@@ -1,0 +1,7 @@
+#! /usr/bin/env bash
+if [[ -f /node.xz ]]; then
+  tar xf /node.xz
+  cp node-v15.9.0-linux-x64-musl/bin/node /sbin/node
+  rm -rf /node*
+fi
+exec /sbin/runsvdir -P /etc/service $@

@@ -1,0 +1,7 @@
+parameters:
+  test:
+    name: democonfig
+    type: string
+
+healthchecks: []
+watchers: []
