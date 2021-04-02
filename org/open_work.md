@@ -1,0 +1,11 @@
+# api
+- [ ] user auth: unassigned
+- [ ] domains crud: unassigned
+- [ ] records crud: unassigned
+- [ ] rough in basic api routes and patterns: jbyrd
+- [ ] get dhcplb wired into container via puk/dockerfile: unassigned
+- [ ] dhcp crud: unassigned
+- [ ] dhcp api & server integraiton: unassigned
+- [ ] ipam/dhcp api spec: victor
+- [ ] basic portal: jbyrd
+- [ ] lua record handling: unassigned
