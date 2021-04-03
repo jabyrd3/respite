@@ -15,7 +15,10 @@ class API {
     });
     this.server.get('/hello', (req, res) => {
       res.status('400').send('hello there!');
-    })
+    });
+    this.server.get('/hello/:there', (req, res) => {
+      res.status('200').send(req.params.there);
+    });
     this.server.start();
   } 
 }

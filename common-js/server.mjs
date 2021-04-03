@@ -1,31 +1,78 @@
 import http from 'http';
 import url from 'url';
-
+import crypto from 'crypto'; 
 export default class Server {
   constructor(config){
     this.config = config;
     this.router = this.router.bind(this);
     this.stop = this.stop.bind(this);
     this.server = http.createServer(this.router);
-    this.routes = {};
+    this.routes = {
+      PUT: {},
+      GET: {},
+      POST: {},
+      PATCH: {},
+      DELETE: {}
+    };
   }
   get(route, handler){
-    this.routes[`GET:${route}`] = handler;
+    this.assign('GET', route, handler);
   }
   post(route, handler){
-    this.routes[`POST:${route}`] = handler;
+    this.assign('POST', route, handler);
   }
   delete(route, handler){
-    this.routes[`DELETE:${route}`] = handler;
+    this.assign('DELETE', route, handler);
   }
   put(route, handler){
-    this.routes[`PUT:${route}`] = handler;
+    this.assign('PUT', route, handler);
+  }
+  patch(route, handler){
+    this.assign('PATCH', route, handler);
+  }
+  assign (method, route, handler) {
+    const partitioned = route.split('/').filter(f=>f.length > 0);
+    const rLen = partitioned.length;
+    const unparams = partitioned.filter(p => p[0] !== ':');
+    const params = partitioned.map((i, index) => i[0] === ':' ? {
+      name: i.slice(1),
+      index
+    } : false).filter(f=>f);
+    if(params.length > 1){
+      console.log('ERROR: jordans stupid server only supports one param for now');
+      process.exit(1);
+    }
+    const hashedUnparams = crypto.createHash('sha1').update(unparams.join('/')).digest('base64');
+    this.routes[method][hashedUnparams] = {
+      partitioned,
+      rLen,
+      unparams,
+      params,
+      route,
+      handler
+    };
+  }
+  pickRoute(method, pathname){
+    // todo: unfuck this hashing shit, find a better way to deterministically pick the right route
+    // this currently will only work if theres a single parameterized segment of the pathname
+    // this is extremely temporary. youll need to fix the assign method and this method
+    let route = false
+    let iteration = 0;
+    const split = pathname.split('/');
+    while (!route && iteration < 5){
+      const skipped = split.map((i, idx) => idx !== iteration ? i : false).filter(f=>f).join('/');
+      const genHash = crypto.createHash('sha1').update(skipped).digest('base64');
+      if(this.routes[method][genHash]){
+        return route = this.routes[method][genHash];
+      }
+      iteration++ 
+    }
+    return route;
   }
   router(req, res){
     const pUrl = url.parse(req.url);
-    const routesByType = Object.keys(this.routes)
-      .filter(route => route.indexOf(req.method) === 0);
-    const route = routesByType.find(route=>route.includes(pUrl.pathname));
+    const route = this.pickRoute(req.method, pUrl.pathname);
+    const splitRoute = pUrl.pathname.split('/').filter(f => f.length > 0);
     if (!route) {
       console.log(`INFO: no handler for ${pUrl.pathname}`);
       return;
@@ -43,8 +90,17 @@ export default class Server {
           return resWrapped;
         }
       });
-      const reqWrapped = Object.assign({}, req, {data: sData});
-      this.routes[route](reqWrapped, resWrapped);
+      const reqWrapped = Object.assign({}, req, {
+        data: sData,
+        params: route && route.params.reduce((acc, val) => {
+          return {
+            ...acc,
+            [val.name]: splitRoute[val.index]
+          };
+        }, {})
+        
+      });
+      route && route.handler(reqWrapped, resWrapped);
     });
   }
   start(){
