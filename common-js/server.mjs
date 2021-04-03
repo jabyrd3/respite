@@ -42,15 +42,26 @@ export default class Server {
       console.log('ERROR: jordans stupid server only supports one param for now');
       process.exit(1);
     }
-    const hashedUnparams = crypto.createHash('sha1').update(unparams.join('/')).digest('base64');
-    this.routes[method][hashedUnparams] = {
-      partitioned,
-      rLen,
-      unparams,
-      params,
-      route,
-      handler
-    };
+    if(params.length === 1){
+      const hashedUnparams = crypto.createHash('sha1').update(unparams.join('/')).digest('base64');
+      return this.routes[method][hashedUnparams] = {
+        partitioned,
+        rLen,
+        unparams,
+        params,
+        route,
+        handler
+      };
+    }
+    this.routes[method][route] = {
+            partitioned,
+            rLen,
+            unparams,
+            params,
+            route,
+            handler
+          };
+
   }
   pickRoute(method, pathname){
     // todo: unfuck this hashing shit, find a better way to deterministically pick the right route
@@ -59,6 +70,9 @@ export default class Server {
     let route = false
     let iteration = 0;
     const split = pathname.split('/');
+    if(this.routes[method][pathname]){
+      return this.routes[method][pathname];
+    }
     while (!route && iteration < 5){
       const skipped = split.map((i, idx) => idx !== iteration ? i : false).filter(f=>f).join('/');
       const genHash = crypto.createHash('sha1').update(skipped).digest('base64');
