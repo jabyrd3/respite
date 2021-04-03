@@ -15,22 +15,22 @@ export default class Server {
       DELETE: {}
     };
   }
-  get(route, handler){
-    this.assign('GET', route, handler);
+  get(route, middlewares = [], handler){
+    this.assign('GET', route, middlewares, handler);
   }
-  post(route, handler){
-    this.assign('POST', route, handler);
+  post(route, middlewares = [], handler){
+    this.assign('POST', route, middlewares, handler);
   }
-  delete(route, handler){
-    this.assign('DELETE', route, handler);
+  delete(route, middlewares = [], handler){
+    this.assign('DELETE', route, middlewares, handler);
   }
-  put(route, handler){
-    this.assign('PUT', route, handler);
+  put(route, middlewares = [], handler){
+    this.assign('PUT', route, middlewares, handler);
   }
-  patch(route, handler){
-    this.assign('PATCH', route, handler);
+  patch(route, middlewares = [], handler){
+    this.assign('PATCH', route, middlewares, handler);
   }
-  assign (method, route, handler) {
+  assign (method, route, middlewares, handler) {
     const partitioned = route.split('/').filter(f=>f.length > 0);
     const rLen = partitioned.length;
     const unparams = partitioned.filter(p => p[0] !== ':');
@@ -46,6 +46,7 @@ export default class Server {
       const hashedUnparams = crypto.createHash('sha1').update(unparams.join('/')).digest('base64');
       return this.routes[method][hashedUnparams] = {
         partitioned,
+        middlewares,
         rLen,
         unparams,
         params,
@@ -55,6 +56,7 @@ export default class Server {
     }
     this.routes[method][route] = {
             partitioned,
+            middlewares,
             rLen,
             unparams,
             params,
@@ -112,8 +114,13 @@ export default class Server {
             [val.name]: splitRoute[val.index]
           };
         }, {})
-        
       });
+      // todo: finish middleware execution / chaining
+      // if(route.middlewares.length > 0){
+      //   route.middlewares.forEach((mw) => {
+      //     const {req, res} = mw()
+      //   })
+      // }
       route && route.handler(reqWrapped, resWrapped);
     });
   }

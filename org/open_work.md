@@ -1,11 +1,14 @@
 # api
-- [ ] user auth: unassigned
-- [ ] domains crud: unassigned
-- [ ] records crud: unassigned
-- [ ] rough in basic api routes and patterns: jbyrd
+- [x] rough in example api routes and patterns: jbyrd [done]
+- [ ] domains crud: jbyrd [inprogress]
+- [ ] records crud: jbyrd [inprogress]
+- [ ] add middlware support to server.mjs
+    - [ ] write user auth middleware: unassigned
+    - [ ] write domain-ownership middleware: unassigned
+- [ ] support multiple routeparams in server.mjs: unassigned
 - [ ] get dhcplb wired into container via puk/dockerfile: unassigned
 - [ ] dhcp crud: unassigned
-- [ ] dhcp api & server integraiton: unassigned
+- [ ] dhcp api & server integration: unassigned
 - [ ] ipam/dhcp api spec: victor
 - [ ] basic portal: jbyrd
 - [ ] lua record handling: unassigned

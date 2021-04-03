@@ -15,9 +15,7 @@ class API {
     soa.run();
     const a = db.prepare("INSERT INTO records (domain_id, name, content, type,ttl,prio) VALUES (1,'example.com','192.0.2.10','A',120,NULL);")
     a.run();
-    // end todo
-
-    // 
+    
     this.server = new Server({
       port: 8080
     });
@@ -31,7 +29,7 @@ class API {
           });
       });
     });
-    
+
     this.server.start();
   } 
 }
