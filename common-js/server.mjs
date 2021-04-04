@@ -15,19 +15,39 @@ export default class Server {
       DELETE: {}
     };
   }
-  get(route, middlewares = [], handler){
+  unpackArgs(args){
+    let route, middlewares=[], handler;
+    args.forEach(arg => {
+      if(typeof arg === 'function'){
+        return handler = arg;
+      }
+      if(typeof arg === 'string'){
+        return route = arg;
+      }
+      if(typeof middlewares.length !== 0){
+        return middlewares = arg;
+      }
+    });
+    return {route, middlewares, handler};
+  }
+  get(...args){
+    const {route, middlewares, handler} = this.unpackArgs(args);
     this.assign('GET', route, middlewares, handler);
   }
-  post(route, middlewares = [], handler){
+  post(...args){
+    const {route, middlewares, handler} = this.unpackArgs(args);
     this.assign('POST', route, middlewares, handler);
   }
-  delete(route, middlewares = [], handler){
+  delete(...args){
+    const {route, middlewares, handler} = this.unpackArgs(args);
     this.assign('DELETE', route, middlewares, handler);
   }
-  put(route, middlewares = [], handler){
+  put(...args){
+    const {route, middlewares, handler} = this.unpackArgs(args);
     this.assign('PUT', route, middlewares, handler);
   }
-  patch(route, middlewares = [], handler){
+  patch(...args){
+    const {route, middlewares, handler} = this.unpackArgs(args);
     this.assign('PATCH', route, middlewares, handler);
   }
   assign (method, route, middlewares, handler) {
@@ -99,14 +119,14 @@ export default class Server {
     });
     req.on('end', () => {
       const sData = data.toString();
-      const resWrapped = Object.assign(res, {
+      let resWrapped = Object.assign(res, {
         send: res.end,
         status: sc => {
           res.statusCode = sc;
           return resWrapped;
         }
       });
-      const reqWrapped = Object.assign({}, req, {
+      let reqWrapped = Object.assign({}, req, {
         data: sData,
         params: route && route.params.reduce((acc, val) => {
           return {
@@ -116,11 +136,13 @@ export default class Server {
         }, {})
       });
       // todo: finish middleware execution / chaining
-      // if(route.middlewares.length > 0){
-      //   route.middlewares.forEach((mw) => {
-      //     const {req, res} = mw()
-      //   })
-      // }
+      if(route.middlewares.length > 0){
+        let toMiddle = [...route.middlewares];
+        while (toMiddle.length > 0) {
+          const mw = toMiddle.shift();
+          reqWrapped = mw(reqWrapped);
+        }
+      }
       route && route.handler(reqWrapped, resWrapped);
     });
   }
