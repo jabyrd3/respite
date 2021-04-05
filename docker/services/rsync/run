@@ -1,0 +1,3 @@
+#! /bin/bash
+# ${Math.random()}
+exec rsync -a /root/pdns root@secondary:/root/

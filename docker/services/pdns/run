@@ -1,6 +1,6 @@
 #! /bin/bash
 mkdir -p /var/run/
-if [[ ! -f /root/pdns/pdns.sqlite3 ]]; then
+if [[ ! -f /root/pdns/pdns.sqlite3 && $PRIMARY == 'true' ]]; then
   mkdir -p /root/pdns
   sqlite3 /root/pdns/pdns.sqlite3 < /etc/pdns/schema.sql
 fi;
