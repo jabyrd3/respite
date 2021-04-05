@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3';
 import {readdir} from 'fs';
 
 // todo: make verbose mode configurable via env var
-const db = sqlite('/root/pdns.sqlite3', { verbose: console.log });
+const db = sqlite('/root/pdns/pdns.sqlite3', { verbose: console.log });
 class API {
   constructor(){
     // WAL mode makes sqlite go fast and pdns is defaulting to it

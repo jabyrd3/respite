@@ -7,7 +7,7 @@ import parseConfig from './parseConf.mjs';
 const ls = promisify(readdir);
 const read = promisify(readFile);
 const write = promisify(writeFile);
-
+``
 // const testing = () => {
 //   console.log(getDirectories('/etc/puk/services'))
 // }
@@ -55,7 +55,9 @@ class Renderer {
     });
   }
   flow = (services, configuration) => {
-    return Promise.all(services.map(svc=>this.renderService(svc)));
+    // todo: do this filter shit better, string 'true' sucks
+    return Promise.all(services.filter(svc => typeof svc.config.enable === 'undefined' || eval('`' + svc.config.enable + '`') === 'true')
+      .map(svc=>this.renderService(svc)));
   }
   getDirectories(source){
     return readdirSync(source, {withFileTypes: true})
