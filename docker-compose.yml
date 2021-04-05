@@ -1,0 +1,30 @@
+---
+version: '3.4'
+services:
+  primary:
+    image: respite:develop
+    env_file: .env
+    ports:
+      - "8080:8080"
+      - "5354:53/udp"
+    environment:
+      SELF: 'primary'
+      NODES: 'primary, secondary, tertiary'
+      PRIMARY: 'true'
+  secondary:
+    image: respite:develop
+    env_file: .env
+    ports:
+      - "5355:53/udp"
+    environment:
+      NODES: 'primary, secondary, tertiary'
+      SELF: 'secondary'
+  tertiary:
+    image: respite:develop
+    env_file: .env
+    ports:
+      - "5356:53/udp"
+    environment:
+      NODES: 'primary, secondary, tertiary'
+      SELF: 'tertiary'
+
