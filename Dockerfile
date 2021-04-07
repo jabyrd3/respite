@@ -28,5 +28,6 @@ COPY common-js /puk/common
 RUN chmod +x /puk/index.mjs
 RUN ln -s /puk/index.mjs /sbin/puk
 COPY docker/entrypoint /usr/local/bin/entrypoint
+COPY docker/dev-seed.sh /usr/local/bin/dev-seed.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]

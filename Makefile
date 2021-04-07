@@ -5,6 +5,8 @@
 	fi
 	echo "export RESPITEPRIVKEY=\"$$(cat dummycerts/id_rsa)\"" > .env
 	echo "export RESPITEPUBKEY=\"$$(cat dummycerts/id_rsa.pub)\"" >> .env
+	echo "export DEV_MODE=true" >> .env
+
 
 
 .PHONY: build
