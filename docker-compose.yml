@@ -5,6 +5,8 @@ services:
     image: respite:develop
     build: .
     env_file: .env
+    # volumes: 
+    #   - "./devdb:/root/pdns"
     ports:
       - "8080:8080"
       - "5354:53/udp"
