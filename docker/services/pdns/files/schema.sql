@@ -2,12 +2,14 @@ PRAGMA foreign_keys = 1;
 
 CREATE TABLE domains (
   id                    INTEGER PRIMARY KEY,
+  owner                 INTEGER DEFAULT NULL,
   name                  VARCHAR(255) NOT NULL COLLATE NOCASE,
   master                VARCHAR(128) DEFAULT NULL,
   last_check            INTEGER DEFAULT NULL,
   type                  VARCHAR(6) NOT NULL,
   notified_serial       INTEGER DEFAULT NULL,
-  account               VARCHAR(40) DEFAULT NULL
+  account               VARCHAR(40) DEFAULT NULL,
+  FOREIGN KEY (owner) REFERENCES users(id)
 );
 
 CREATE UNIQUE INDEX name_index ON domains(name);
@@ -88,3 +90,9 @@ CREATE TABLE tsigkeys (
 );
 
 CREATE UNIQUE INDEX namealgoindex ON tsigkeys(name, algorithm);
+
+CREATE TABLE users (
+ id                     INTEGER PRIMARY KEY,
+ username               VARCHAR(255),
+ password               VARCHAR(255)
+)
