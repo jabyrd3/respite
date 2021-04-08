@@ -95,4 +95,13 @@ CREATE TABLE users (
  id                     INTEGER PRIMARY KEY,
  username               VARCHAR(255),
  password               VARCHAR(255)
-)
+);
+
+CREATE TABLE sessions (
+ id                     INTEGER PRIMARY KEY,
+ user                   INTEGER NOT NULL,
+ created                TEXT,
+ last_used              TEXT,
+ uuid                   TEXT ,
+ FOREIGN KEY (user) REFERENCES users(id)
+);

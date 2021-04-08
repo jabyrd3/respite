@@ -2,11 +2,12 @@ import http from 'http';
 import url from 'url';
 import crypto from 'crypto'; 
 export default class Server {
-  constructor(config){
+  constructor(config, mwExtras){
     this.config = config;
     this.router = this.router.bind(this);
     this.stop = this.stop.bind(this);
     this.server = http.createServer(this.router);
+    this.mwExtras = mwExtras;
     this.routes = {
       PUT: {},
       GET: {},
@@ -127,7 +128,7 @@ export default class Server {
         }
       });
       let reqWrapped = Object.assign({}, req, {
-        data: sData,
+        data: sData.length > 0 ? JSON.parse(sData) : '',
         params: route && route.params.reduce((acc, val) => {
           return {
             ...acc,
@@ -140,7 +141,7 @@ export default class Server {
         let toMiddle = [...route.middlewares];
         while (toMiddle.length > 0) {
           const mw = toMiddle.shift();
-          reqWrapped = mw(reqWrapped);
+          reqWrapped = mw(reqWrapped, this.mwExtras);
         }
       }
       route && route.handler(reqWrapped, resWrapped);

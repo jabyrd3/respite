@@ -6,10 +6,11 @@ import {readdir} from 'fs';
 const db = sqlite('/root/pdns/pdns.sqlite3', { verbose: console.log });
 class API {
   constructor(){
+    db.pragma('journal_mode = WAL');
+    db.loadExtension('/uuid.so');
     this.server = new Server({
       port: 8080
-    });
-
+    }, {db});
     // chore to dynamically import route definitions
     readdir('/api/routes', (err, files) => {
       files.forEach(file => {
