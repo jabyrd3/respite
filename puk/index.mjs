@@ -5,6 +5,7 @@ import fs from 'fs';
 console.log('hi from puk!')
 
 new RenderRunit();
-setTimeout(()=>{process.exit(0)}, 500000)
+// todo: set up server and whatnot
+setTimeout(()=>{process.exit(0)}, 5000000000000)
 // ParseConfig();
 
