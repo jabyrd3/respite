@@ -94,7 +94,8 @@ CREATE UNIQUE INDEX namealgoindex ON tsigkeys(name, algorithm);
 CREATE TABLE users (
  id                     INTEGER PRIMARY KEY,
  username               VARCHAR(255),
- password               VARCHAR(255)
+ password               VARCHAR(255),
+ salt                   VARCHAR(255)
 );
 
 CREATE TABLE sessions (
