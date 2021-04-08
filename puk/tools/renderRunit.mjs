@@ -21,8 +21,8 @@ class Renderer {
         config
       };
     }))
-    .then(this.flow).then(()=>{console.log('alldone')}).catch(console.error);
-    // console.log('jabby', this.services);
+    .then(this.flow)
+    .catch(console.error);
   }
   evalDoc = (path, vals) => {
     const raw = fs.readFileSync(path, 'utf8');
@@ -57,7 +57,7 @@ class Renderer {
   flow = (services, configuration) => {
     // todo: do this filter shit better, string 'true' sucks
     return Promise.all(services.filter(svc => typeof svc.config.enable === 'undefined' || eval('`' + svc.config.enable + '`') === 'true')
-      .map(svc=>this.renderService(svc)));
+      .map(svc => this.renderService(svc)));
   }
   getDirectories(source){
     return readdirSync(source, {withFileTypes: true})

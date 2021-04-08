@@ -6,7 +6,6 @@ export default (server, db) => {
     res.status(200).send(JSON.stringify(preparedPutDomain.run(req.params.domain, req.session.user)));
   });
   server.get('/domain', [getSession], (req, res) => {
-    console.log('domainhandler jabby', req.session)
     res.status('200').send(JSON.stringify(preparedGetDomain.all(req.session.user)));
   });
 };

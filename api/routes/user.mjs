@@ -7,7 +7,6 @@ export default (server, db) => {
     const {username, password} = req.data;
     const user = getUser.get(username);
 
-    console.log('jabby got user', user);
     if(!user || user.password !== password){
      return res.status(401).send('bad login homie');
     }

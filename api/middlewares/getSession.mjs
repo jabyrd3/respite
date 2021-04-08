@@ -1,9 +1,15 @@
-export default (req, mwExtras) => {
+export default (req, res, mwExtras) => {
   var getSession = mwExtras.db.prepare("SELECT * FROM sessions WHERE uuid = ?");
   const session = getSession.get(req.headers.session);
-  console.log('gotsession', session);
+  if(!session){
+    res.status(401).send('invalid session');
+    res = false;
+  }
   return {
-    ...req,
-    session
+    req: {
+      ...req,
+      session
+    },
+    res
   };
 };

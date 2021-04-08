@@ -128,7 +128,7 @@ export default class Server {
         }
       });
       let reqWrapped = Object.assign({}, req, {
-        data: sData.length > 0 ? JSON.parse(sData) : '',
+        data: sData && sData.length > 0 ? JSON.parse(sData) : '',
         params: route && route.params.reduce((acc, val) => {
           return {
             ...acc,
@@ -141,10 +141,15 @@ export default class Server {
         let toMiddle = [...route.middlewares];
         while (toMiddle.length > 0) {
           const mw = toMiddle.shift();
-          reqWrapped = mw(reqWrapped, this.mwExtras);
+          const ran = mw(reqWrapped, resWrapped, this.mwExtras);
+          reqWrapped = ran.req;
+          resWrapped = ran.res;
+          if(!resWrapped){
+            toMiddle = [];
+          }
         }
       }
-      route && route.handler(reqWrapped, resWrapped);
+      route && resWrapped && route.handler(reqWrapped, resWrapped);
     });
   }
   start(){
