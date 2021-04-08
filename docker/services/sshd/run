@@ -8,4 +8,4 @@ chmod 700 /root/.ssh
 chmod 644 /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/id_rsa
 chmod 644 /root/.ssh/id_rsa.pub
-${process.env.PRIMARY !== "true" ? 'exec /usr/sbin/sshd -ddd -D' : 'sv stop sshd'}
+${process.env.PRIMARY !== "true" ? 'exec /usr/sbin/sshd -D' : 'sv stop sshd'}

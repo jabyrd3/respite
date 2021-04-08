@@ -1,0 +1,15 @@
+#! /bin/bash
+sleep 5
+echo "execing dev seed"
+curl -s -X POST -H 'content-type: application/json' --data '{"username": "foobar", "password": "password"}' localhost:8080/user
+curl -s -X POST -H 'content-type: application/json' --data '{"username": "demo", "password": "anotherpassword"}' localhost:8080/user
+
+export SESSION=$(curl -s --request PUT --header "Content-Type: application/json" --data '{"username": "foobar", "password": "password"}' localhost:8080/user/login | jq -r .uuid)
+export SESSION2=$(curl -s --request PUT --header "Content-Type: application/json" --data '{"username": "demo", "password": "anotherpassword"}' localhost:8080/user/login | jq -r .uuid)
+
+curl -s -X POST -H 'content-type: application/json' -H "session: $SESSION" localhost:8080/domain/example.com
+curl -s -X POST -H 'content-type: application/json' -H "session: $SESSION2" localhost:8080/domain/anotherexample.com
+
+curl -s -X POST -H 'content-type: application/json' --data '{"content": "localhost admin.example.com"}' -H "session: $SESSION" localhost:8080/domain/1/admin.example.com/soa
+curl -s -X POST -H 'content-type: application/json' --data '{"content": "4.4.4.4"}' -H "session: $SESSION" localhost:8080/domain/1/example.com/a
+

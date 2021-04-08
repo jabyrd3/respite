@@ -1,3 +1,2 @@
 #! /bin/bash
-echo "rsync exited with code" $?
-sleep 3
+sleep 3 

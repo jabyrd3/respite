@@ -59,13 +59,9 @@ export default class Server {
       name: i.slice(1),
       index
     } : false).filter(f=>f);
-    if(params.length > 1){
-      console.log('ERROR: jordans stupid server only supports one param for now');
-      process.exit(1);
-    }
-    if(params.length === 1){
-      const hashedUnparams = crypto.createHash('sha1').update(unparams.join('/')).digest('base64');
-      return this.routes[method][hashedUnparams] = {
+    if(params.length > 0){
+      // const hashedUnparams = crypto.createHash('sha1').update(unparams.join('/')).digest('base64');
+      return this.routes[method][partitioned.join('/')] = {
         partitioned,
         middlewares,
         rLen,
@@ -90,21 +86,23 @@ export default class Server {
     // todo: unfuck this hashing shit, find a better way to deterministically pick the right route
     // this currently will only work if theres a single parameterized segment of the pathname
     // this is extremely temporary. youll need to fix the assign method and this method
-    let route = false
     let iteration = 0;
-    const split = pathname.split('/');
+    const split = pathname.split('/').filter(f => f && f.length > 0);
     if(this.routes[method][pathname]){
       return this.routes[method][pathname];
     }
-    while (!route && iteration < 5){
-      const skipped = split.map((i, idx) => idx !== iteration ? i : false).filter(f=>f).join('/');
-      const genHash = crypto.createHash('sha1').update(skipped).digest('base64');
-      if(this.routes[method][genHash]){
-        return route = this.routes[method][genHash];
+    const availRoutes = this.routes[method];
+    const rKey = Object.keys(availRoutes).find(rk => {
+      const inspectingRoute = this.routes[method][rk];
+      if(rk.indexOf('domain') > -1){
+        debugger;
       }
-      iteration++ 
-    }
-    return route;
+      if(split.length !== inspectingRoute.rLen || inspectingRoute.unparams.some(up => !split.includes(up))){
+        return false;
+      }
+      return true;
+    });
+    return this.routes[method][rKey];
   }
   router(req, res){
     const pUrl = url.parse(req.url);

@@ -2,7 +2,7 @@ FROM alpine:latest
 RUN mkdir -p /etc/service/puk /etc/puk/services /tmp/scratch
 COPY ./docker/start-puk/run /etc/service/puk/run
 RUN apk update \
-    && apk --no-cache add runit pdns pdns-backend-sqlite3 sqlite curl bash unzip nodejs npm python3 make gcc g++ libc-dev rsync openssh sqlite-dev \
+    && apk --no-cache add runit pdns pdns-backend-sqlite3 sqlite curl bash unzip nodejs npm python3 make gcc g++ libc-dev rsync openssh sqlite-dev jq \
     && rm -rf /var/cache/apk/* 
 WORKDIR /tmp/scratch
 COPY ./docker/start-puk/puk.yml /tmp/scratch/puk.yml
@@ -30,6 +30,5 @@ COPY common-js /puk/common
 RUN chmod +x /puk/index.mjs
 RUN ln -s /puk/index.mjs /sbin/puk
 COPY docker/entrypoint /usr/local/bin/entrypoint
-COPY docker/dev-seed.sh /usr/local/bin/dev-seed.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]

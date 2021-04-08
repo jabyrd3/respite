@@ -1,0 +1,5 @@
+#! /bin/bash
+echo "dev seed exited with code" $?
+sv stop dev-seed
+rm -rf /etc/puk/services/dev-seed
+rm -rf /etc/service/dev-seed

@@ -3,8 +3,5 @@ mkdir -p /var/run/
 mkdir -p /root/pdns
 if [[ ! -f /root/pdns/pdns.sqlite3 && $PRIMARY == 'true' ]]; then
   sqlite3 /root/pdns/pdns.sqlite3 < /etc/pdns/schema.sql
-  if [[ ! -z "$DEV_MODE" ]]; then
-    bash /usr/local/bin/dev-seed.sh
-  fi
 fi;
 exec pdns_server
