@@ -7,7 +7,11 @@
 	echo "export RESPITEPUBKEY=\"$$(cat dummycerts/id_rsa.pub)\"" >> .env
 	echo "export DEV_MODE=true" >> .env
 
-
+.PHONY: test
+test: 
+	docker-compose up -d
+	sleep 5
+	docker-compose -f test/docker-compose.yml up
 
 .PHONY: build
 build:
