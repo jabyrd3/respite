@@ -1,0 +1,25 @@
+#! /bin/bash
+if [[ ! -f /root/pdns/op.log ]]; then
+  echo "Waiting for oplog sync to begin"
+  exit 0
+fi;
+if [[ ! -f /root/.oplog.position ]]; then
+  echo 0 > /root/.oplog.position
+fi
+
+POSITION=$(cat /root/.oplog.position)
+END=$(wc -l /root/pdns/op.log)
+if [[ $POSITION == $END || $END == 0 ]]; then
+  echo "No lines to replay"
+  exit 0
+fi
+
+echo "current position: $POSITION"
+echo "goal position: $END"
+LINES=$(awk 'NR <= $POSITION' /root/pdns/op.log)
+echo "LINES: $LINES"
+while IFS= read -r LINE; do
+  sqlite3 /root/pdns/pdns.sqlite3 "$LINE"
+done <<< "$LINES"
+
+echo $END > /root/.oplog.position

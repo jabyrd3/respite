@@ -10,6 +10,6 @@ export SESSION2=$(curl -s --request PUT --header "Content-Type: application/json
 curl -s -X POST -H 'content-type: application/json' -H "session: $SESSION" localhost:8080/domain/example.com
 curl -s -X POST -H 'content-type: application/json' -H "session: $SESSION2" localhost:8080/domain/anotherexample.com
 
-curl -s -X POST -H 'content-type: application/json' --data '{"content": "localhost admin.example.com"}' -H "session: $SESSION" localhost:8080/domain/1/admin.example.com/soa
+curl -s -X POST -H 'content-type: application/json' --data '{"content": "localhost example.com 1 10380 3600 604800 3600"}' -H "session: $SESSION" localhost:8080/domain/1/example.com/soa
 curl -s -X POST -H 'content-type: application/json' --data '{"content": "4.4.4.4"}' -H "session: $SESSION" localhost:8080/domain/1/example.com/a
 

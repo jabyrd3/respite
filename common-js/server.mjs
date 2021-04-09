@@ -59,19 +59,7 @@ export default class Server {
       name: i.slice(1),
       index
     } : false).filter(f=>f);
-    if(params.length > 0){
-      // const hashedUnparams = crypto.createHash('sha1').update(unparams.join('/')).digest('base64');
-      return this.routes[method][partitioned.join('/')] = {
-        partitioned,
-        middlewares,
-        rLen,
-        unparams,
-        params,
-        route,
-        handler
-      };
-    }
-    this.routes[method][route] = {
+    this.routes[method][partitioned.join('/')] = {
             partitioned,
             middlewares,
             rLen,

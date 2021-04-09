@@ -1,3 +1,6 @@
 #! /bin/bash
 # ${Math.random()}
-exec rsync -a /root/pdns root@secondary:/root/
+${( () => {
+  const nodes = process.env.NODES.split(',').filter(node => node !== process.env.SELF).map(s => s.trim());
+  return nodes.map((node, idx) => `${idx === nodes.length - 1 ? 'exec ' : ''}rsync -a /root/pdns/op.log root@${node}:/root/pdns/op.log`).join('\n');
+})()}

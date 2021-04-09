@@ -5,7 +5,7 @@ export default (server, db) => {
   const getSession = db.prepare("SELECT * FROM sessions WHERE user = ?;");
   const deleteSessions = db.prepare("DELETE FROM sessions WHERE user = ?;");
   const generateSession = db.prepare("INSERT INTO sessions (user, created, last_used, uuid) VALUES (?, datetime('now'), datetime('now'), uuid());");
-  const createUser = db.prepare("INSERT INTO users (username, password, salt) VALUES (?, ?, ?)");
+  const createUser = db.prepare("INSERT INTO users (username, password, salt) VALUES (?, ?, ?);");
   server.put('/user/login', (req, res) => {
     const {username, password} = req.data;
     const user = getUser.get(username);

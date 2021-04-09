@@ -1,3 +1,5 @@
 #! /bin/bash
-# exec node --inspect-brk=0.0.0.0:9229 /api/index.mjs
+sleep 3
+touch /root/pdns/op.log
+# exec node --inspect=0.0.0.0:9229 /api/index.mjs
 exec node /api/index.mjs

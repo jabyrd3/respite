@@ -6,6 +6,6 @@ console.log('hi from puk!')
 
 new RenderRunit();
 // todo: set up server and whatnot
-setTimeout(()=>{process.exit(0)}, 5000000000000)
+setTimeout(()=>{process.exit(0)}, 500000000)
 // ParseConfig();
 
