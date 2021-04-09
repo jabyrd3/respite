@@ -14,6 +14,8 @@ services:
       SELF: 'primary'
       NODES: 'primary, secondary, tertiary'
       PRIMARY: 'true'
+    networks:
+      - respite
   secondary:
     image: respite:develop
     build: .
@@ -23,6 +25,8 @@ services:
     environment:
       NODES: 'primary, secondary, tertiary'
       SELF: 'secondary'
+    networks:
+      - respite
   tertiary:
     image: respite:develop
     build: .
@@ -32,4 +36,7 @@ services:
     environment:
       NODES: 'primary, secondary, tertiary'
       SELF: 'tertiary'
-
+    networks:
+      - respite
+networks:
+  respite:

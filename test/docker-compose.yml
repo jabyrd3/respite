@@ -1,0 +1,14 @@
+---
+version: '3.4'
+services:
+  test:
+    image: respite-test:develop
+    build: .
+    volumes:
+      - ".:/test"
+    entrypoint:
+      bats /test/
+networks:
+  default:
+    external:
+      name: platform_respite
