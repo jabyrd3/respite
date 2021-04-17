@@ -3,7 +3,6 @@ export default class Domains extends Component {
   constructor(props) {
     super(props);
     nd.get('domain').then(domains => {
-      window.location.hash = 'domains';
       this.props.store({domains});
     }).catch(console.error);
   }

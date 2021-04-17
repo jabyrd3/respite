@@ -17,6 +17,10 @@ window.html = html;
 window.cache = new Cache();
 const session = cache.get('session');
 window.nd = new ND(session);
+window.unauthHook = () => {
+  cache.clear();
+  window.location.hash = '';
+}
 // todo: figure out how to emulate redux and connect it to preact
 // class Store {
 //   constructor(){

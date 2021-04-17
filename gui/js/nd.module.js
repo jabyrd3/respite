@@ -37,8 +37,11 @@ class NetworkDad {
       })
       .then(async response => {
         if (!response.ok){
+          if(response.status === 401 && window.unauthHook){
+            return window.unauthHook();
+          }
           // send json err messages so that this works
-          return reject(await response.json());
+          return reject(await response.text());
         }
         try {
           const json = await response.json();

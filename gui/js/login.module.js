@@ -16,6 +16,7 @@ export default class Login extends Component {
       console.log("success", r);
       window.nd = new NetworkDad(r.uuid);
       cache.set('session', r.uuid);
+      window.location.hash = 'domains';
     })
     .catch(console.error);
     console.log(this.state);
