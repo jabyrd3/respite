@@ -23,12 +23,12 @@ export default class Login extends Component {
     this.setState({[e.target.attributes['data-attr'].value]: e.target.value});
   }
   render = () => {
-    return html`<form class="login" onSubmit=${this.submit}>
-      <input onInput=${this.change} data-attr="username" placeholder="username" />
-      <input onInput=${this.change} data-attr="password" placeholder="password" /> 
-      <button role="submit">submit</button>
-      ${this.state.username}
-      ${this.state.password}
+    return html`
+      <h1 class="whole" style="padding-top: 38vh">Respite DDI</h1>
+      <form class="login flex wrapping whole" style="padding-top: 40vh" onSubmit=${this.submit}>
+      <input class="gutter-bottom" onInput=${this.change} data-attr="username" placeholder="username" autofocus="true" />
+      <input class="gutter-bottom" onInput=${this.change} data-attr="password" placeholder="password" /> 
+      <button class="center gutter-top" role="submit">submit</button>
     </form>`;
   }
 }

@@ -1,4 +1,92 @@
 * {
   color: white;
   background-color: #333;
+  font-family: "Helvetica Neue", "Helvetica", "helvetica", "Arial", "arial", sans-serif;
+}
+
+.container{
+  max-width: 1024px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+h1, h2, h3{
+  font-weight: bold;
+}
+h1{
+  font-size: 36px;
+}
+h2{
+  font-size: 28px;
+}
+h3 {
+  font-size: 20px;
+}
+input {
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: none !important;
+  border-width: 0px 0px 1px 0px;
+  border-color: white;
+  font-size: 18px;
+  width: 100%;
+}
+form{
+  display: flex;
+  max-width: 540px;
+  flex-wrap: wrap;
+}
+button{
+  font-size: 18px;
+  border-width: 0px;
+  background-color: black;
+  color: white;
+  padding: 3px 8px;
+}
+button:hover{
+  color: black;
+  background-color: white;
+}
+.flex {
+  display: flex;
+}
+.wrap {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+.wrapping{
+  flex-wrap: wrap;
+}
+.whole{
+  width: 100%;
+}
+.half{
+  max-width: 50%;
+}
+.quarter{
+  max-width: 25%;
+}
+.three-quarter{
+  width: 75%;
+}
+.center {
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+.gutter-top{
+  margin-top: 18px;
+}
+.gutter-left{
+  margin-left: 18px;
+}
+.gutter-right{
+  margin-right: 18px;
+}
+.gutter-bottom{
+  margin-bottom: 18px;
 }

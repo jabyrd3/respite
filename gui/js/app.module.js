@@ -48,9 +48,9 @@ class App extends Component {
   render(){
     switch(this.state.hash){
       case '':
-        return html`<div class="container"><${Login} store=${this.updateRootState} cache=${cache} /></div>`;
+        return html`<div class="container flex"><${Login} store=${this.updateRootState} cache=${cache} /></div>`;
       case '#login':
-        return html`<div class="container"><${Login} store=${this.updateRootState} cache=${cache} /></div>`;
+        return html`<div class="container flex"><${Login} store=${this.updateRootState} cache=${cache} /></div>`;
       case '#domains':
         return html`<div class="container"><${Domains} store=${this.updateRootState} state=${this.state} /></div>`;
     }
