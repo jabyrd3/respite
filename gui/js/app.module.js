@@ -1,5 +1,3 @@
-// import Component from '/js/component.module.js';
-// todo: write preact, theres a stash around with a stab at starting it
 import { h, Component, render } from './preact.min.js';
 import htm from './html.js';
 import Domains from './domains.module.js';

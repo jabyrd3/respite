@@ -13,19 +13,16 @@ export default class Login extends Component {
       password
     })
     .then(r => {
-      console.log("success", r);
       window.nd = new NetworkDad(r.uuid);
       cache.set('session', r.uuid);
       window.location.hash = 'domains';
     })
     .catch(console.error);
-    console.log(this.state);
   }
   change = (e) => {
     this.setState({[e.target.attributes['data-attr'].value]: e.target.value});
   }
   render = () => {
-    // value="${store.getItem('demo')}" 
     return html`<form class="login" onSubmit=${this.submit}>
       <input onInput=${this.change} data-attr="username" placeholder="username" />
       <input onInput=${this.change} data-attr="password" placeholder="password" /> 
