@@ -1,7 +1,7 @@
 // import Component from '/js/component.module.js';
 // todo: write preact, theres a stash around with a stab at starting it
-import { h, Component, render } from 'https://unpkg.com/preact?module';
-import htm from 'https://unpkg.com/htm?module';
+import { h, Component, render } from './preact.min.js';
+import htm from './html.js';
 import Domains from './domains.module.js';
 import Login from './login.module.js';
 import ND from './nd.module.js';
@@ -50,11 +50,11 @@ class App extends Component {
   render(){
     switch(this.state.hash){
       case '':
-        return html`<div><${Login} store=${this.updateRootState} cache=${cache} /></div>`;
+        return html`<div class="container"><${Login} store=${this.updateRootState} cache=${cache} /></div>`;
       case '#login':
-        return html`<div><${Login} store=${this.updateRootState} cache=${cache} /></div>`;
+        return html`<div class="container"><${Login} store=${this.updateRootState} cache=${cache} /></div>`;
       case '#domains':
-        return html`<div><${Domains} store=${this.updateRootState} state=${this.state} /></div>`;
+        return html`<div class="container"><${Domains} store=${this.updateRootState} state=${this.state} /></div>`;
     }
   }
 }
