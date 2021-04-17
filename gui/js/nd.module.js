@@ -1,3 +1,4 @@
+import {Component} from 'https://unpkg.com/preact?module';
 class NetworkDad {
   constructor(key){
     if(key) {

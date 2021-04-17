@@ -1,6 +1,5 @@
 import getSession from '../middlewares/getSession.mjs';
 export default (server, db) => {
-  // const preparedGetRecords = db.prepare('select * from records INNER JOIN domains on records.domain_id = ? WHERE domains.owner = ?;');
   const preparedGetRecords = db.prepare('SELECT * FROM domains inner JOIN records r on r.domain_id = domains.id WHERE owner = ? AND r.domain_id = ?;');
   const createRecord = db.prepare('INSERT INTO records (domain_id, name, type, content, ttl, prio, disabled, ordername, auth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);');
   server.get('/domain/:id', [getSession], (req, res) => {
