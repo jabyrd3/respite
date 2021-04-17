@@ -10,9 +10,17 @@
 - [ ] dhcp api & server integration: unassigned
 - [ ] ipam/dhcp api spec: victor
 - [ ] lua record handling: unassigned
+- [ ] add static caching for prod mode in server.mjs
 
 # in progress
-- [ ] basic portal: jbyrd [inprogress]
+- [x] basic portal: jbyrd [inprogress]
+    - [ ] static asset serving
+    - [ ] basic templated component class
+    - [ ] login page
+    - [ ] router
+    - [ ] state manager
+    - [ ] components render funcs called on state changes
+        - [ ] calculate which functions to call for rerender to save cpu
 - [s] domains crud: jbyrd [inprogress]
 - [s] records crud: jbyrd [inprogress]
 

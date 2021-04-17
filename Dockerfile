@@ -30,5 +30,6 @@ COPY common-js /puk/common
 RUN chmod +x /puk/index.mjs
 RUN ln -s /puk/index.mjs /sbin/puk
 COPY docker/entrypoint /usr/local/bin/entrypoint
+COPY gui /gui
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]

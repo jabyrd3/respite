@@ -24,7 +24,7 @@ class API {
           });
       });
     });
-
+    this.server.fallbackStatic('/gui');
     this.server.start();
   } 
 }

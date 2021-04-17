@@ -1,6 +1,7 @@
 import http from 'http';
 import url from 'url';
 import crypto from 'crypto'; 
+import fs from 'fs';
 export default class Server {
   constructor(config, mwExtras){
     this.config = config;
@@ -51,6 +52,10 @@ export default class Server {
     const {route, middlewares, handler} = this.unpackArgs(args);
     this.assign('PATCH', route, middlewares, handler);
   }
+  fallbackStatic(dir){
+    //todo add static caching for prod mode
+    this.fallbackDir = dir;
+  }
   assign (method, route, middlewares, handler) {
     const partitioned = route.split('/').filter(f=>f.length > 0);
     const rLen = partitioned.length;
@@ -69,6 +74,19 @@ export default class Server {
             handler
           };
 
+  }
+  mime(type){
+    const suffix = type[0].split('.').slice(-1)[0];
+    switch(suffix){
+      case 'js':
+        return 'text/javascript';
+      case 'html':
+        return 'text/html';
+      case 'ico':
+        return 'image/x-icon';
+      case 'css':
+        return 'text/css';
+    }
   }
   pickRoute(method, pathname){
     // todo: unfuck this hashing shit, find a better way to deterministically pick the right route
@@ -97,8 +115,15 @@ export default class Server {
     const route = this.pickRoute(req.method, pUrl.pathname);
     const splitRoute = pUrl.pathname.split('/').filter(f => f.length > 0);
     if (!route) {
-      console.log(`INFO: no handler for ${pUrl.pathname}`);
-      return;
+      return fs.stat(`${this.fallbackDir}/${splitRoute.join('/')}`, (err, stats) => {
+        if(err){
+          console.log(`INFO: no handler for ${pUrl.pathname}`, err);
+          return;
+        }
+        res.statusCode = 200
+        res.setHeader("Content-Type", this.mime(splitRoute.slice(-1)));
+        res.end(fs.readFileSync(`${this.fallbackDir}/${splitRoute.join('/')}`));
+      });
     }
     let data = [];
     req.on('data', chunk => {
