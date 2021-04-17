@@ -21,31 +21,8 @@ window.unauthHook = () => {
   cache.clear();
   window.location.hash = '';
 }
-// todo: figure out how to emulate redux and connect it to preact
-// class Store {
-//   constructor(){
-//     this.state = {};
-//     // this.actions = {};
-//   }
-//   getState(){
-//     return this.state;
-//   }
-//   getItem(key){
-//     console.log("getitem called", this.state);
-//     return this.state[key];
-//   }
-//   mutate(ns){
-//     console.log('mutate called', ns);
-//     this.state = {
-//       ...this.state,
-//       ...ns
-//     };
-//   }
-// }
 
-// const store = new Store();
-// store.mutate({foo: 'bustin'});
-
+// todo: make proper redux-ish state store, this updateRootstate shit is clunky.
 class App extends Component {
   constructor(props){
     super(props);
