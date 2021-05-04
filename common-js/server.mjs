@@ -26,7 +26,7 @@ export default class Server {
       if(typeof arg === 'string'){
         return route = arg;
       }
-      if(typeof middlewares.length !== 0){
+      if(typeof arg.length !== 'undefined'){
         return middlewares = arg;
       }
     });
