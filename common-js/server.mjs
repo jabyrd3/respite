@@ -1,6 +1,5 @@
 import http from 'http';
 import url from 'url';
-import crypto from 'crypto'; 
 import fs from 'fs';
 export default class Server {
   constructor(config, mwExtras){
@@ -89,9 +88,6 @@ export default class Server {
     }
   }
   pickRoute(method, pathname){
-    // todo: unfuck this hashing shit, find a better way to deterministically pick the right route
-    // this currently will only work if theres a single parameterized segment of the pathname
-    // this is extremely temporary. youll need to fix the assign method and this method
     let iteration = 0;
     const split = pathname.split('/').filter(f => f && f.length > 0);
     if(this.routes[method][pathname]){
@@ -100,9 +96,6 @@ export default class Server {
     const availRoutes = this.routes[method];
     const rKey = Object.keys(availRoutes).find(rk => {
       const inspectingRoute = this.routes[method][rk];
-      if(rk.indexOf('domain') > -1){
-        debugger;
-      }
       if(split.length !== inspectingRoute.rLen || inspectingRoute.unparams.some(up => !split.includes(up))){
         return false;
       }
@@ -147,7 +140,6 @@ export default class Server {
           };
         }, {})
       });
-      // todo: finish middleware execution / chaining
       if(route.middlewares.length > 0){
         let toMiddle = [...route.middlewares];
         while (toMiddle.length > 0) {
