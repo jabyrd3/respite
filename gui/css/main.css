@@ -90,3 +90,6 @@ button:hover{
 .gutter-bottom{
   margin-bottom: 18px;
 }
+pre{ 
+  font-family: monospace;
+}

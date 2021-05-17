@@ -4,7 +4,7 @@ import Domains from './domains.module.js';
 import Login from './login.module.js';
 import ND from './nd.module.js';
 import Cache from './cache.module.js';
-
+import Records from './records.module.js';
 // Initialize htm with Preact
 const html = htm.bind(h);
 // setup globals
@@ -25,7 +25,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      hash: session ? '#domains' : window.location.hash,
+      hash: session ? window.location.hash : '#login',
       domains: []
     };
   }
@@ -45,14 +45,31 @@ class App extends Component {
   updateRootState = (state) => {
     this.setState(state);
   }
+  finagleHash(hash){
+    console.log('finagling hash', hash);
+    if(hash === ''){
+      return 'default';
+    }
+    if(hash === '#login'){
+      return 'login'
+    }
+    if(hash === '#domains'){
+      return 'domains'
+    }
+    if(hash.includes('#domains/')){
+      return 'records';
+    }
+  }
   render(){
-    switch(this.state.hash){
-      case '':
+    switch(this.finagleHash(this.state.hash)){
+      case 'default':
         return html`<div class="container flex"><${Login} store=${this.updateRootState} cache=${cache} /></div>`;
-      case '#login':
+      case 'login':
         return html`<div class="container flex"><${Login} store=${this.updateRootState} cache=${cache} /></div>`;
-      case '#domains':
+      case 'domains':
         return html`<div class="container"><${Domains} store=${this.updateRootState} state=${this.state} /></div>`;
+      case 'records':
+        return html`<div class="container"><${Records} store=${this.updateRootState} state=${this.state} /></div>`;
     }
   }
 }

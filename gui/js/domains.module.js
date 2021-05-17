@@ -8,7 +8,9 @@ export default class Domains extends Component {
   }
   render(){
     return html`<div>
+      <h1>fuck</h1>
       ${this.props.state.domains.map(domain => html`<pre>${JSON.stringify(domain, null, 2)}</pre>`)}
+      ${this.props.state.domains.map(domain => html`<a onClick=${() => {window.location.hash = `domains/${domain.id}`}}>${domain.name}</a>`)}
     </div>`;
   }
 }
