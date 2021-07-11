@@ -1,6 +1,6 @@
 docker_compose('./docker-compose.yml')
 docker_build('respite:develop', '.', 
-  ignore=[],
+  ignore=['./gui'],
   live_update = [
     sync('./api', '/api'),
     sync('./memhunt', '/memhunt'),
