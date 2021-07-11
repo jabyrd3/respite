@@ -5,10 +5,16 @@ services:
     image: respite:develop
     build: .
     env_file: .env
-    # volumes: 
+    privileged: true
+    volumes: 
     #   - "./devdb:/root/pdns"
+      - ./gui:/gui
     ports:
+      # gui/pai
       - "8080:8080"
+      # memhunt
+      - "8081:8081"
+      # dns
       - "5354:53/udp"
     environment:
       SELF: 'primary'

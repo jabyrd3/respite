@@ -14,6 +14,8 @@ WORKDIR /
 RUN curl https://sqlite.org/src/raw/5bb2264c1b64d163efa46509544fd7500cb8769cb7c16dd52052da8d961505cf?at=uuid.c > uuid.c
 RUN gcc -fPIC -lm -shared uuid.c -o uuid.so
 RUN mkdir -p /api
+WORKDIR /memhunt
+RUN npm install buffer-hexdump 
 WORKDIR /api
 RUN npm install better-sqlite3
 # todo: ugh
@@ -25,7 +27,9 @@ COPY docker/services /etc/puk/services
 # RUN curl -s https://unofficial-builds.nodejs.org/download/release/v15.9.0/node-v15.9.0-linux-x64-musl.tar.xz > /node.xz
 COPY puk /puk
 COPY api /api
+COPY memhunt /memhunt
 COPY common-js /api/common
+COPY common-js /memhunt/common
 COPY common-js /puk/common
 RUN chmod +x /puk/index.mjs
 RUN ln -s /puk/index.mjs /sbin/puk
