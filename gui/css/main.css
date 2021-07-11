@@ -58,11 +58,15 @@ button:hover{
   flex-wrap: nowrap;
   align-items: flex-start;
 }
+.wrap.flex-wrap{
+  flex-wrap:  wrap;
+}
 .wrapping{
   flex-wrap: wrap;
 }
 .whole{
-  width: 100%;
+  min-width: 100%;
+  display:  flex;
 }
 .half{
   max-width: 50%;
@@ -92,4 +96,19 @@ button:hover{
 }
 pre{ 
   font-family: monospace;
+}
+
+/*.list{
+  width: 100%;
+  float: left;
+  clear: both;
+}
+.list .row {
+  width: 100%;
+  float: left;
+  clear:  both;
+}
+*/
+.cell{
+  margin-right:  20px;
 }

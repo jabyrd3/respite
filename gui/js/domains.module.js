@@ -38,7 +38,7 @@ export default class Domains extends Component {
     // ${this.props.state.domains.map(domain => html`<pre>${JSON.stringify(domain, null, 2)}</pre>`)}
     return html`<div>
       <h1>domains</h1>
-      <${List} items=${this.props.state.domains} columns=${[
+      <${List} class="wrap flex flex-wrap" items=${this.props.state.domains} columns=${[
         item => html`<a onClick=${() => {window.location.hash = `domains/${item.id}`}}>${item.name}</a>`,
         item => html`${item.records.length} records`
       ]}/>

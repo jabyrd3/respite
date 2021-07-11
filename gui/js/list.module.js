@@ -5,14 +5,12 @@ export default class List extends Component {
   }
   render(){
     console.log(this.props.items)
-    return html`<div class="list">
+    return html`<div class="${this.props.class} list">
       ${this.props.items.map(item => {
-        return this.props.columns.map(column => {
-          return html`<div class="row">
-            <div class="cell">${column(item)}</div>
-          </div>`;
+        return html`<div class="whole">${this.props.columns.map(column => {
+          return html`<div class="cell">${column(item)}</div>`})}</div>`
         })
-      })}
+      }
     </div>`;
   }
 }
