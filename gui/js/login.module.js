@@ -24,8 +24,8 @@ export default class Login extends Component {
   }
   render = () => {
     return html`
-      <h1 class="whole" style="padding-top: 38vh">Respite DDI</h1>
-      <form class="login flex wrapping whole" style="padding-top: 40vh" onSubmit=${this.submit}>
+      <h1 class="quarter" style="padding-top: 38vh">Respite DDI</h1>
+      <form class="login flex wrapping quarter" style="padding-top: 40vh; margin-left: 40px;" onSubmit=${this.submit}>
       <input class="gutter-bottom" onInput=${this.change} data-attr="username" placeholder="username" autofocus="true" />
       <input class="gutter-bottom" onInput=${this.change} data-attr="password" placeholder="password" /> 
       <button class="center gutter-top" role="submit">submit</button>

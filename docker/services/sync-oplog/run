@@ -8,18 +8,18 @@ if [[ ! -f /root/.oplog.position ]]; then
 fi
 
 POSITION=$(cat /root/.oplog.position)
-END=$(wc -l /root/pdns/op.log)
+END=$(wc -l /root/pdns/op.log | awk '{print $1}')
+# echo "end $END"
+# echo "position $POSITION"
 if [[ $POSITION == $END || $END == 0 ]]; then
-  echo "No lines to replay"
+  # echo "No lines to replay"
   exit 0
 fi
 
-echo "current position: $POSITION"
-echo "goal position: $END"
-LINES=$(awk 'NR <= $POSITION' /root/pdns/op.log)
-echo "LINES: $LINES"
+LINES=$(awk "NR > $POSITION" /root/pdns/op.log)
+# echo "LINES: $LINES"
 while IFS= read -r LINE; do
   sqlite3 /root/pdns/pdns.sqlite3 "$LINE"
 done <<< "$LINES"
 
-echo $END > /root/.oplog.position
+echo -n $END > /root/.oplog.position
