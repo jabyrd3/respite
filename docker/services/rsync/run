@@ -1,6 +1,22 @@
-#! /bin/bash
-# ${Math.random()}
-${( () => {
-  const nodes = process.env.NODES.split(',').filter(node => node !== process.env.SELF).map(s => s.trim());
-  return nodes.map((node, idx) => `${idx === nodes.length - 1 ? 'exec ' : ''}rsync -e "ssh -p 23" -a /root/pdns/op.log root@${node}:/root/pdns/op.log`).join('\n');
+${( async () => {
+  const {CLUSTER_RECORD} = process.env;
+  if(CLUSTER_RECORD){
+    const execIfNeeded = (idx, nodes) => {
+      return idx === nodes.length - 1 ?
+        'exec ' :
+        '';
+    };
+    const {default: dns} = await import('dns');
+    const {default: util} = await import('util');
+    const addr = await util.promisify(dns.resolveTxt)(process.env.CLUSTER_RECORD);
+    const nodes = addr.map(i=>i[0]);
+    done = '#! /bin/bash\n' + 
+      nodes
+        .filter(n => n !== process.env.SELF)
+        .map((node, idx) =>
+          `${execIfNeeded(idx, nodes)}rsync -e "ssh -p ${process.env.SSH_PORT || 23}" -a /root/pdns/op.log root@${node}:/root/pdns/op.log`).join('\n');
+  } else {
+    const nodes = process.env.NODES.split(',').filter(node => node !== process.env.SELF).map(s => s.trim());
+    done = '#! /bin/bash\n' + nodes.map((node, idx) => `${idx === nodes.length - 1 ? 'exec ' : ''}rsync -e "ssh -p ${process.env.SSH_PORT || 23}" -a /root/pdns/op.log root@${node}:/root/pdns/op.log`).join('\n');
+  }
 })()}

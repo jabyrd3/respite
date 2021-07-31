@@ -7,10 +7,14 @@ import parseConfig from './parseConf.mjs';
 const ls = promisify(readdir);
 const read = promisify(readFile);
 const write = promisify(writeFile);
-``
-// const testing = () => {
-//   console.log(getDirectories('/etc/puk/services'))
-// }
+
+function pause(id) {
+  return new Promise(resolve => setTimeout(() => {
+    console.log(`pause ${id} is over`);
+    resolve();
+  }, 1500));
+}
+
 class Renderer {
   constructor(configuration){
     Promise.all(this.getDirectories('/etc/puk/services').map(async service => {
@@ -24,30 +28,38 @@ class Renderer {
     .then(this.flow)
     .catch(console.error);
   }
-  evalDoc = (path, vals) => {
+  evalDoc = async (path, vals) => {
     const raw = fs.readFileSync(path, 'utf8');
-    console.log('raw', raw);
-    return eval('`' + raw + '`');
+    let done = true;
+    if(raw.includes('async')){
+      done = false
+    }
+    const output = eval('`' + raw + '`');
+    while(done === false){
+            await pause()
+    }
+    return done === true ? output : done;
+
   };
   renderService = (svc) => {
-    return new Promise((res) => {
+    return new Promise(async (res) => {
       const {service, config} = svc;
       child.execSync(`mkdir -p /etc/puk/tmp/${service}`);
       // run
-      fs.writeFileSync(`/etc/puk/tmp/${service}/run`, this.evalDoc(`/etc/puk/services/${service}/run`), {
+      fs.writeFileSync(`/etc/puk/tmp/${service}/run`, await this.evalDoc(`/etc/puk/services/${service}/run`), {
         mode: '1755'
       });
       // finish
-      fs.writeFileSync(`/etc/puk/tmp/${service}/finish`, this.evalDoc(`/etc/puk/services/${service}/finish`), {
+      fs.writeFileSync(`/etc/puk/tmp/${service}/finish`, await this.evalDoc(`/etc/puk/services/${service}/finish`), {
         mode: '1755'
       });
       // // mv tmp dir to /etc/service
       child.execSync(`mv /etc/puk/tmp/${service} /etc/service/`);
       child.execSync(`rm -rf /etc/puk/tmp/${service}`);
-      config.files.map(file => {
+      config.files.map(async file => {
         console.log('rendering file', file);
         child.execSync(`mkdir -p ${file.path}`);
-        fs.writeFileSync(`${file.path}/${file.filename}`, this.evalDoc(`/etc/puk/services/${service}/files/${file.filename}`), 'utf8', {
+        fs.writeFileSync(`${file.path}/${file.filename}`, await this.evalDoc(`/etc/puk/services/${service}/files/${file.filename}`), 'utf8', {
           mode: '1766'
         });
       });

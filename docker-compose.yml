@@ -20,6 +20,8 @@ services:
       SELF: 'primary'
       NODES: 'primary, secondary, tertiary'
       PRIMARY: 'true'
+      SSH_PORT: '22'
+      # CLUSTER_RECORD: 'nineveh.cluster.dev.host'
     networks:
       - respite
   secondary:
@@ -31,6 +33,8 @@ services:
     environment:
       NODES: 'primary, secondary, tertiary'
       SELF: 'secondary'
+      SSH_PORT: '22'
+      # CLUSTER_RECORD: 'nineveh.cluster.dev.host'
     networks:
       - respite
   tertiary:
@@ -42,6 +46,8 @@ services:
     environment:
       NODES: 'primary, secondary, tertiary'
       SELF: 'tertiary'
+      SSH_PORT: '22'
+      # CLUSTER_RECORD: 'nineveh.cluster.dev.host'
     networks:
       - respite
 networks:
