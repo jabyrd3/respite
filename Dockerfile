@@ -16,16 +16,16 @@ RUN gcc -fPIC -lm -shared uuid.c -o uuid.so
 RUN mkdir -p /api
 WORKDIR /memhunt
 RUN npm install buffer-hexdump 
-# get sqlite source, modify sqlite3.c to set the trace option to 1024 and cleanup
+# get sqlite source, modify sqlite3.h to set the trace option to 1024 and cleanup
 RUN mkdir -p /ss
 RUN curl https://sqlite.com/snapshot/sqlite-snapshot-202107191400.tar.gz > /ss/sqlitesource.tar.gz
 WORKDIR /ss
 RUN tar -xzvf sqlitesource.tar.gz
 WORKDIR /ss/sqlite-snapshot-202107191400
 # here goes nothing
-RUN echo -e "# define SQLITE_TRACE_SIZE_LIMIT=1024\n$(cat /ss/sqlite-snapshot-202107191400/sqlite3.c)" > sqlite3.c
-RUN echo -e "# undef SQLITE_HAVE_OS_TRACE\n$(cat /ss/sqlite-snapshot-202107191400/sqlite3.c)" > sqlite3.c
-RUN echo -e "# undef SQLITE_DEBUG\n$(cat /ss/sqlite-snapshot-202107191400/sqlite3.c)" > sqlite3.c
+RUN echo -e "#define SQLITE_TRACE_SIZE_LIMIT=1024\n$(cat /ss/sqlite-snapshot-202107191400/sqlite3.h)" > sqlite3.h
+RUN echo -e "#undef SQLITE_HAVE_OS_TRACE\n$(cat /ss/sqlite-snapshot-202107191400/sqlite3.h)" > sqlite3.h
+RUN echo -e "#undef SQLITE_DEBUG\n$(cat /ss/sqlite-snapshot-202107191400/sqlite3.h)" > sqlite3.h
 
 # install better-sqlite3 from source and tell it where to find sqlite.c and sqlite.h
 WORKDIR /api
