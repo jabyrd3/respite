@@ -21,6 +21,7 @@ services:
       NODES: 'primary, secondary, tertiary'
       PRIMARY: 'true'
       SSH_PORT: '22'
+      DEV_MODE: 'true'
       # CLUSTER_RECORD: 'nineveh.cluster.dev.host'
     networks:
       - respite
